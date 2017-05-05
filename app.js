@@ -11,7 +11,9 @@ import mongoose from 'mongoose';
 import {mapUrl} from './utils/url';
 import * as actions from './modules';
 import config from './config.json';
+
 const log = log4js.getLogger("app");
+
 mongoose.Promise = Promise;
 
 function normalizePort(val) {

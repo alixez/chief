@@ -15,10 +15,8 @@ const { ObjectId } = mongoose.Schema.Types;
 // mongdb 是绝对的自由，你想怎么存怎么存。你存的什么查询的时候 就给你什么。
 // 存在即合理 ！！！ 这里的定义只是一种程序约束。
 const NewsSchema = mongoose.Schema({
-
   title: {type: String, required: true},
   body: {type: String, required: true},
-
 });
 
 // 将上面的数据库映射为model, 并导出(使用该model时需要导入);
