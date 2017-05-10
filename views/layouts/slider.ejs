@@ -1,0 +1,43 @@
+<!-- slide start -->
+<div class="slide">
+    <div class="bd" style="height: 401.262px;">
+        <ul style="position: relative; width: 1466px; height: 402px;">
+            <li style="height: 401.262px; position: absolute; width: 1466px; left: 0px; top: 0px; display: none;">
+                <img src="/img/banner1.jpg" width="100%">
+            </li>
+            <li style="height: 401.262px; position: absolute; width: 1466px; left: 0px; top: 0px; display: none;">
+                <a href="" target="_blank"> <img src="/img/banner1.jpg" width="100%">
+                </a></li>
+            <li style="height: 401.262px; position: absolute; width: 1466px; left: 0px; top: 0px;">
+                <a href=""> <img src="/img/banner2 .jpg" width="100%">
+                </a></li>
+            <li style="height: 401.262px; position: absolute; width: 1466px; left: 0px; top: 0px; display: none;">
+                <a href=""> <img src="/img/banner3.jpg" width="100%">
+                </a></li>
+        </ul>
+    </div>
+    <div class="hd">
+        <ul>
+            <li class="">1</li>
+            <li class="">2</li>
+            <li class="on">4</li>
+            <li>4</li>
+        </ul>
+    </div>
+</div>
+<script type="text/javascript">
+  //比例 * 高度
+  var h = ($(window).width() / 1920) * 564;
+  $(".slide .bd").css("height", h);
+  $(".slide .bd ul li").css("height", h);
+
+  jQuery(".slide").slide({
+    titCell: ".hd ul",
+    mainCell: ".bd ul",
+    effect: "fold",
+    autoPlay: true,
+    autoPage: true,
+    interTime: 5000
+  });
+</script>
+<!-- slide end -->
