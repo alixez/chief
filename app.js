@@ -37,7 +37,10 @@ function appLoader() {
   const port = normalizePort(process.env.PORT || '3000');
   log4js.configure({
     appenders: [
-      {type: 'console'},
+      { type: 'console',
+        category: ['cheese', 'console'],
+        level: 'debug',
+      },
       {
         type: 'file',
         filename: './logs/errors.log',
@@ -50,16 +53,26 @@ function appLoader() {
     replaceConsole: true
   });
 
+
   const app = express();
   const server = new http.Server(app);
   app.set('port', port);
   app.set('views', path.join(__dirname, 'views'));
   app.set('view engine', 'ejs');
 
+  // 设置session
+  app.use(session({
+    secret: 'f33a8fdda5d38de16443156a751fc4e6143ef614',
+    saveUninitialized: true,
+    resave: false,
+    cookie: {secret: true}
+  }));
+
   // 使用不同中间件
   app.use(log4js.connectLogger(log4js.getLogger('http'), {level: 'auto'}));
   // app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
   app.use(express.static(path.join(__dirname, './public')));
+  app.use(bodyParser.urlencoded({extended: false}));
   app.use(bodyParser.json({limit: '50mb'}));
   const dest = path.resolve(__dirname, './uploads/');
   const storage = multer.diskStorage({
@@ -82,6 +95,13 @@ function appLoader() {
     const {action, params} = mapUrl(actions, splittedUrlPath);
 
     if (action) {
+      const user = {};
+      params.user = user;
+      params.isLogin = false;
+      if (req.session.user) {
+        params.user = req.session.user;
+        params.isLogin = true;
+      }
       action(req, params)
         .then((result) => {
           if (result instanceof Function) {
@@ -144,8 +164,8 @@ function appLoader() {
     if (err) {
       console.log(err);
     }
-    log.info('===> [厨匠应用]chief is running on port %s', port);
-    log.info('===> [厨匠应用]please open link http://localhost:%s', port);
+    console.log('===> [厨匠应用]chief is running on port %s', port);
+    console.log('===> [厨匠应用]please open link http://localhost:%s', port);
   });
 
 }
@@ -154,50 +174,3 @@ function appLoader() {
 // 启动应用
 
 appLoader();
-
-// var express = require('express');
-// var path = require('path');
-// var favicon = require('serve-favicon');
-// var logger = require('morgan');
-// var cookieParser = require('cookie-parser');
-// var bodyParser = require('body-parser');
-//
-// var index = require('./routes/index');
-// var users = require('./routes/users');
-//
-// var app = express();
-//
-// // view engine setup
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'jade');
-//
-// // uncomment after placing your favicon in /public
-// //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-// app.use(logger('dev'));
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(cookieParser());
-// app.use(express.static(path.join(__dirname, 'public')));
-//
-// app.use('/', index);
-// app.use('/users', users);
-//
-// // catch 404 and forward to error handler
-// app.use(function(req, res, next) {
-//   var err = new Error('Not Found');
-//   err.status = 404;
-//   next(err);
-// });
-//
-// // error handler
-// app.use(function(err, req, res, next) {
-//   // set locals, only providing error in development
-//   res.locals.message = err.message;
-//   res.locals.error = req.app.get('env') === 'development' ? err : {};
-//
-//   // render the error page
-//   res.status(err.status || 500);
-//   res.render('error');
-// });
-//
-// module.exports = app;

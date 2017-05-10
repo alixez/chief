@@ -1,2 +1,0 @@
-
-export word from './word';
